@@ -4,9 +4,246 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Plural v0.4.13</title>
+<style>
+:root, [data-theme="dark"] {
+            --gold: #d4af37; --bg: #0a0a0a; --card: #151515; --accent: #3e2723;
+            --text: #f0f0f0; --grey: #888; --border: #444; --neg: #ff4444;
+            --toolbar-bg: #111; --toolbar-border: #2a2a2a;
+            --modal-bg: #181818; --input-bg: #222;
+            --btn-bg: #333; --btn-border: #444; --th-bg: #252525;
+            --td-border: #222; --sense-border: #333;
+            --social-border: #333; --social-bg: rgba(255,255,255,0.03);
+            --inv-footer: #222; --sec-title-text: var(--gold);
+            --sec-title-btn: var(--gold); --sec-title-sub: var(--grey);
+            --fg-fa-color: #7ec8a0; --fg-mo-color: #a08cec;
+            --fg-fa-bg: rgba(126,200,160,0.04); --fg-mo-bg: rgba(160,140,236,0.04);
+            --picker-bg: rgba(20,20,20,0.92); --picker-blur: blur(12px) saturate(1.4);
+        }
+        [data-theme="light"] {
+            --gold: #7a5c10; --bg: #f4eed8; --card: #ede5c8; --accent: #5c3618;
+            --text: #1e0f02; --grey: #7a6a50; --border: #c8aa6a; --neg: #ff5533;
+            --toolbar-bg: #e8dfc0; --toolbar-border: #c8aa6a;
+            --modal-bg: #f4eed8; --input-bg: #e8dfc0;
+            --btn-bg: #ddd5b8; --btn-border: #c8aa6a; --th-bg: #ddd5b8;
+            --td-border: #c8aa6a; --sense-border: #c8aa6a;
+            --social-border: #c8aa6a; --social-bg: rgba(0,0,0,0.03);
+            --inv-footer: #ddd5b8;
+            --sec-title-text: #f5ead6;
+            --sec-title-btn: rgba(245,234,214,0.9);
+            --sec-title-sub: rgba(245,234,214,0.6);
+            --fg-fa-color: #2e7d52; --fg-mo-color: #5e35b1;
+            --fg-fa-bg: rgba(46,125,82,0.06); --fg-mo-bg: rgba(94,53,177,0.06);
+            --picker-bg: rgba(240,234,210,0.92); --picker-blur: blur(12px) saturate(1.6);
+        }
+
+/* ===== Plural v0.4.13 — componentes no padrão da Singular ===== */
+:root,[data-theme="dark"]{--text-muted:#b9b9b9}
+[data-theme="light"]{--text-muted:#4b3a1e}
+body{margin:0;background:var(--bg);color:var(--text);font:12px/1.35 Arial,sans-serif}
+header{position:sticky;top:0;z-index:20;padding:6px 8px;display:flex;gap:6px;align-items:center;background:var(--toolbar-bg);border-bottom:1px solid var(--border)}
+h1{margin:0;font-size:15px;color:var(--gold)}
+.charbar{position:sticky;top:48px;z-index:19;display:flex;gap:4px;overflow-x:auto;padding:4px 8px;background:var(--toolbar-bg);border-bottom:1px solid var(--border)}
+.charbar button{flex:0 0 auto;min-height:32px;padding:4px 10px;font-size:.72rem;border:1px solid var(--border);border-radius:5px;background:var(--btn-bg);color:var(--text);cursor:pointer}
+.charbar button.active{background:var(--accent);color:var(--sec-title-text);border-color:var(--gold)}
+main{max-width:1450px;margin:0 auto;padding:8px}
+.toolbar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.panel{border:1px solid var(--border);border-radius:7px;background:var(--card);overflow:hidden;margin-bottom:8px}
+.summary{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:3px;padding:8px}
+.summary .cell{border:1px solid var(--border);border-radius:5px;background:var(--input-bg);padding:4px 2px;text-align:center;min-height:44px}
+.summary .cell b{display:block;font-size:.6rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+.summary .cell strong{font-size:1.05rem;color:var(--text)}
+.section{border-top:1px solid var(--border)}
+.section-title{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--accent);color:var(--sec-title-text);font-weight:bold;font-size:.7rem;cursor:pointer}
+.section-title .count{margin-left:auto;font-size:.65rem;color:var(--sec-title-sub)}
+.section-body{padding:0}
+.row{display:flex;justify-content:space-between;gap:8px;padding:5px 10px;border-bottom:1px solid var(--td-border);font-size:.78rem}
+.row span:first-child{overflow-wrap:anywhere;min-width:0}
+.row span:last-child{text-align:right;color:var(--text-muted);white-space:nowrap}
+.dodge{padding:8px 10px;border-top:1px solid var(--border)}
+.dodge label{display:flex;align-items:center;gap:6px;font-size:.72rem;flex-wrap:wrap}
+select,input[type=search]{min-height:34px;border:1px solid var(--border);border-radius:5px;padding:4px 6px;background:var(--input-bg);color:var(--text)}
+button{min-height:34px;border:1px solid var(--border);border-radius:5px;padding:4px 10px;background:var(--btn-bg);color:var(--text);cursor:pointer}
+.primary{background:var(--accent);color:var(--sec-title-text);border-color:var(--gold)}
+.tabs{display:flex;gap:4px;margin-bottom:8px}
+.tabs button{flex:1}
+.tabs button.active{background:var(--accent);color:var(--sec-title-text);border-color:var(--gold)}
+table{border-spacing:0;width:100%;font-size:.78rem}
+th,td{padding:6px 8px;text-align:center;background:var(--card);border-bottom:1px solid var(--td-border);border-right:1px solid var(--td-border);overflow-wrap:anywhere;vertical-align:top}
+thead th{background:var(--th-bg);color:var(--gold);border-bottom:2px solid var(--gold)}
+th:first-child{text-align:left}
+.scroll{overflow:auto;max-height:70dvh}
+.help{font-size:.68rem;color:var(--text-muted);padding:6px 10px;margin:0}
+footer{text-align:center;padding:10px;color:var(--text-muted);font-size:.62rem}
+[hidden]{display:none!important}
+@media(max-width:550px){.summary{grid-template-columns:repeat(4,minmax(0,1fr))}.summary .cell{min-height:40px}}
+
+</style>
 </head>
 <body>
-<h1>Plural v0.4.13</h1>
-<p>Arquivo gerado e validado: 9 fichas, nome+cor por personagem no comparativo, Vantagens/Desvantagens/Peculiaridades, poderes em Vantagens, comparativo sem níveis de carga.</p>
+<header>
+  <h1>Plural <small>v0.4.13</small></h1>
+  <button id="import" class="primary" title="Importar fichas" aria-label="Importar fichas">📥</button>
+  <button id="save" title="Salvar mesa" aria-label="Salvar mesa">💾</button>
+  <button id="theme" title="Alternar tema" aria-label="Alternar tema">🌓</button>
+</header>
+<div class="charbar" id="charbar"></div>
+<main>
+  <input id="files" type="file" multiple accept=".json,.gcs,.txt,.plural" hidden>
+  <div id="notice" class="help" role="status" aria-live="polite"></div>
+  <nav class="tabs">
+    <button id="tabSheet" class="active">Ficha</button>
+    <button id="tabCompare">Comparar</button>
+  </nav>
+  <section id="sheetView"><div id="sheet"></div></section>
+  <section id="compareView" hidden>
+    <div class="panel">
+      <div class="section-title">Comparação<span class="count" id="cmpCount"></span></div>
+      <div class="section-body">
+        <div class="toolbar" style="padding:8px">
+          <input id="query" type="search" placeholder="Buscar em todas as seções…" style="flex:1">
+        </div>
+        <div id="comparison" class="scroll"></div>
+      </div>
+    </div>
+  </section>
+  <details class="panel"><summary class="section-title">Diagnóstico e armazenamento</summary><div class="section-body"><p class="help" id="storage">Verificando armazenamento…</p><ul id="diagnostics" class="help" style="padding-left:18px"></ul><button id="clear" style="margin:0 10px 10px">Esvaziar mesa</button></div></details>
+</main>
+<footer>Offline • Sem servidor • Vários personagens • Visual portado da Singular</footer>
+<script>
+const $=x=>document.getElementById(x),esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),ar=x=>Array.isArray(x)?x:[],flat=xs=>ar(xs).flatMap(x=>[x,...flat(x.children)]),num=x=>typeof x==='number'&&Number.isFinite(x)?x:null;
+const labels={st:'ST',dx:'DX',iq:'IQ',ht:'HT',per:'PER',will:'VONT',hp:'PV',fp:'PF'};
+const charColors=['#e6b84c','#7ec8a0','#a08cec','#e88b6a','#6ac1e8','#d97fb0','#b8d16a','#e8d06a','#8fd0c8'];
+function text(e){if(!e)return null;const c=e.cloneNode(true);c.querySelectorAll('button,script,style').forEach(x=>x.remove());return c.textContent.trim()}
+function get(d,q){const e=d.querySelector(q);return e?(e.getAttribute('value')??text(e)):null}
+function classifyTrait(x){
+ const pts=num(x.points);
+ const cats=(x.categories||[]).map(c=>String(c).toLowerCase());
+ if(pts===-1||cats.includes('peculiaridade'))return 'peculiarities';
+ if(pts!=null&&pts<0||cats.includes('desvantagem'))return 'disadvantages';
+ return 'advantages';
+}
+function parseWeight(w){
+ if(w==null)return 0;
+ if(typeof w==='number')return w;
+ const m=String(w).match(/([\d.,]+)\s*(lb|kg)?/i);
+ if(!m)return 0;
+ let v=parseFloat(m[1].replace(',','.'));
+ if(!v)return 0;
+ if((m[2]||'').toLowerCase()==='kg')v*=2.20462;
+ return v;
+}
+function parseSheet(raw,file,original,state={}){
+ const c={id:'p'+Date.now().toString(36)+Math.random().toString(36).slice(2),file,original:original??JSON.stringify(raw),name:'',format:'',attrs:{},skills:[],spells:[],advantages:[],disadvantages:[],peculiarities:[],gear:[],attacks:[],warnings:[],dodge:{current:null,total:null,byEncumbrance:null,auto:null,bl:null,carried:0,level:null},state:{encumbrance:'auto'}};
+ if(typeof raw.sHTML==='string'){
+  c.format='Singular JSON';c.name=raw.charName||file;const t=document.createElement('template');t.innerHTML=raw.sHTML;const d=t.content;
+  for(const[k,q]of Object.entries({st:'#st-val',dx:'#dx-val',iq:'#iq-val',ht:'#ht-val',per:'#per-val',will:'#will-val'}))c.attrs[k]=get(d,q);
+  for(const k of['hp','fp']){const a=get(d,'#'+k+'-cur'),b=get(d,'#'+k+'-max');c.attrs[k]=a!=null||b!=null?`${a??'—'} / ${b??'—'}`:null}
+  c.dodge.current=get(d,'#esq-cur');c.dodge.total=get(d,'#esq-tot');c.dodge.auto=c.dodge.current;
+  const rows=id=>Array.from(d.querySelectorAll('#'+id+' .item-list-row')).map(e=>({name:text(e.querySelector('[contenteditable]'))||'',value:get(e,'.nh-val'),points:get(e,'.pts-input')}));
+  c.skills=rows('skill-list');c.spells=rows('spell-list');
+  const allTraits=Array.from(d.querySelectorAll('#advantage-list .item-list-row,#disadvantage-list .item-list-row,#trait-list .item-list-row')).map(e=>({name:text(e.querySelector('[contenteditable]'))||'',value:get(e,'.trait-lvl')??e.dataset.habLvl??null,points:get(e,'.pts-input')}));
+  for(const x of allTraits){c[classifyTrait(x)].push(x)}
+  for(const r of d.querySelectorAll('#inv-list tr')){const cells=Array.from(r.children).filter(x=>x.tagName==='TD'),qty=cells.find(td=>Array.from(td.children).some(x=>x.matches('input.input-qty')));if(!qty)continue;const edit=cells.filter(x=>x.hasAttribute('contenteditable')),n=text(edit[0]);if(n)c.gear.push({name:n,value:get(qty,'.input-qty'),weight:text(edit[1])})}
+  for(const id of['melee-list','ranged-list'])for(const r of d.querySelectorAll('#'+id+' tr')){const e=Array.from(r.children).filter(x=>x.tagName==='TD'&&x.hasAttribute('contenteditable')),n=text(e[0]);if(n)c.attacks.push({name:n,value:text(e[1]),detail:text(e[2])||''})}
+  c.warnings.push('Snapshot Singular: valores lidos, sem recálculo. Esquiva automática usa o valor registrado.');
+ }else if(Array.isArray(raw.attributes)&&(raw.profile||raw.type==='character')){
+  c.format='GCS';c.name=raw.profile?.name||file;
+  for(const a of raw.attributes){const k=a.attr_id||a.id;if(!k)continue;const max=a.calc?.value??a.value??null;let cur=a.calc?.current??null;if(cur==null&&typeof max==='number'&&typeof a.damage==='number')cur=max-a.damage;c.attrs[k]=['hp','fp'].includes(k)?`${cur??'—'} / ${max??'—'}`:max}
+  const calc=raw.calc||{};
+  const v=calc.dodge;
+  if(Array.isArray(v)){c.dodge.byEncumbrance=Array.from({length:5},(_,i)=>num(v[i]))}
+  c.dodge.bl=parseWeight(calc.basic_lift);
+  let carried=0;
+  for(const e of ar(raw.equipment)){
+   const isCarried=e.equipped===true||e.carried===true;
+   if(!isCarried)continue;
+   const w=parseWeight(e.calc?.extended_weight??e.weight);
+   carried+=w*(num(e.quantity)||1);
+  }
+  c.dodge.carried=carried;
+  if(c.dodge.bl>0){
+   const bl=c.dodge.bl;let lvl=0;
+   if(carried>10*bl)lvl=4;else if(carried>6*bl)lvl=3;else if(carried>3*bl)lvl=2;else if(carried>2*bl)lvl=1;else lvl=0;
+   c.dodge.level=lvl;
+   c.dodge.auto=Array.isArray(c.dodge.byEncumbrance)?(c.dodge.byEncumbrance[lvl]??null):null;
+  }else if(num(v)!==null){c.dodge.auto=v}
+  const rows=xs=>flat(xs).filter(x=>x.name&&!String(x.type||'').includes('container')).map(x=>({name:x.name,value:x.calc?.level??(typeof x.level==='number'?x.level:null),points:x.calc?.points??x.points??null,categories:x.categories||[]}));
+  c.skills=rows(raw.skills);c.spells=rows(raw.spells);
+  const allTraits=flat(raw.traits||raw.advantages).filter(x=>x.name&&!String(x.type||'').includes('container')).map(x=>({name:x.name,value:x.levels??null,points:x.calc?.points??x.points??null,categories:x.categories||[]}));
+  for(const x of allTraits){c[classifyTrait(x)].push(x)}
+  c.gear=flat(raw.equipment).filter(x=>x.description||x.name).map(x=>({name:x.description||x.name,value:x.quantity??null,weight:x.weight??null}));
+  for(const o of[...flat(raw.traits||raw.advantages),...flat(raw.equipment)])for(const w of ar(o.weapons))c.attacks.push({name:o.description||o.name||'(ataque)',value:w.calc?.damage??null,detail:[w.calc?.level!=null?'NH '+w.calc.level:null,w.reach||w.calc?.range||w.range].filter(Boolean).join(' · ')});
+  c.warnings.push('Esquiva automática calculada: carga '+c.dodge.level+' (carga '+c.dodge.carried.toFixed(1)+' lb / BC '+c.dodge.bl+' lb).');
+ }else throw Error('Estrutura não reconhecida');
+ return c;
+}
+function attr(c,k){
+ if(k==='dodge_auto')return c.dodge.auto??c.dodge.current??null;
+ if(k==='dodge_current')return c.dodge.current;
+ if(k==='dodge_total')return c.dodge.total;
+ if(k==='dodge_selected')return c.state.encumbrance==='auto'?(c.dodge.auto??null):(c.dodge.byEncumbrance?.[Number(c.state.encumbrance)]??null);
+ if(/^dodge_[0-4]$/.test(k))return c.dodge.byEncumbrance?.[Number(k.slice(-1))]??null;
+ return c.attrs[k]??null;
+}
+let chars=[],active=0,db=null;
+function serial(){return chars.map(c=>({file:c.file,original:c.original,state:{...c.state}}))}
+function notice(s){$('notice').textContent=s}
+function download(s,name){const u=URL.createObjectURL(new Blob([s],{type:'application/json'})),a=document.createElement('a');a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1500)}
+function saveLocal(){if(!db)return;const tx=db.transaction('mesa','readwrite');tx.objectStore('mesa').put(serial(),'current');tx.oncomplete=()=>$('storage').textContent='Recuperação local atualizada.'}
+async function importFiles(files){let n=0;const fails=[];for(const f of files){try{const original=await f.text(),raw=JSON.parse(original.replace(/^\uFEFF/,''));let batch=[];if(['plural-mesa','plural-mobile','plural-session'].includes(raw.formato)&&Array.isArray(raw.fichas))batch=raw.fichas.map(x=>parseSheet(x.raw??JSON.parse((x.original??x.text??JSON.stringify(x.raw)).replace(/^\uFEFF/,'')),x.file||x.fileName||'ficha.json',x.original??x.text??JSON.stringify(x.raw),x.state||{}));else batch=[parseSheet(raw,f.name,original)];chars.push(...batch);n+=batch.length}catch(e){fails.push(f.name+': '+e.message)}}if(chars.length&&!chars[active])active=0;render();saveLocal();notice(n+' ficha(s) adicionada(s).'+(fails.length?'\nFalhas: '+fails.join('\n'):''));$('files').value=''}
+function render(){
+ $('charbar').innerHTML=chars.map((c,i)=>'<button class="'+(i===active?'active':'')+'" data-i="'+i+'" style="border-left:3px solid '+charColors[i%charColors.length]+'">'+esc(c.name||c.file)+'</button>').join('')||'<span class="help">Nenhuma ficha carregada.</span>';
+ const c=chars[active];
+ $('sheet').innerHTML=c?renderSheet(c):'<div class="panel"><p class="help">Importe fichas GCS ou Singular para começar.</p></div>';
+ renderCompare();
+}
+function renderSheet(c){
+ const sec=(title,body,count,open)=>'<details class="section"'+(open?' open':'')+'><summary class="section-title">'+title+'<span class="count">'+(count??'')+'</span></summary><div class="section-body">'+body+'</div></details>';
+ const rows=xs=>xs.length?xs.map(x=>'<div class="row"><span>'+esc(x.name)+'</span><span>'+(x.value??'—')+(x.points!=null?' <small>['+esc(x.points)+' pts]</small>':'')+(x.weight?' <small>'+esc(x.weight)+'</small>':'')+(x.detail?' <small>'+esc(x.detail)+'</small>':'')+'</span></div>').join(''):'<p class="help">Nenhum registro.</p>';
+ const dodge='<div class="dodge"><b>Esquiva</b><label>Nível de carga <select data-load="'+c.id+'">'+['auto','0','1','2','3','4'].map(v=>'<option value="'+v+'" '+(String(c.state.encumbrance)===v?'selected':'')+'>'+(v==='auto'?'Automático':'Carga '+v)+'</option>').join('')+'</select> <b>'+esc(attr(c,'dodge_selected')??'—')+'</b></label><p class="help">'+(c.dodge.bl>0?('Carga calculada: '+c.dodge.carried.toFixed(1)+' lb / BC '+c.dodge.bl+' lb → nível '+c.dodge.level+'.'):'Sem Base de Carga calculável; usa o valor registrado na ficha.')+'</p></div>';
+ return '<div class="panel"><div class="section-title" style="cursor:default">'+esc(c.name)+'<span class="count">'+esc(c.format)+' · '+esc(c.file)+'</span></div><div class="summary">'+['st','dx','iq','ht','per','will','hp','fp'].map(k=>'<div class="cell"><b>'+labels[k]+'</b><strong>'+esc(attr(c,k)??'—')+'</strong></div>').join('')+'</div>'+dodge+sec('📜 Perícias',rows(c.skills),c.skills.length)+sec('✨ Mágicas',rows(c.spells),c.spells.length)+sec('🧬 Vantagens',rows(c.advantages),c.advantages.length)+sec('📉 Desvantagens',rows(c.disadvantages),c.disadvantages.length)+sec('⚠️ Peculiaridades',rows(c.peculiarities),c.peculiarities.length,false)+sec('🎒 Equipamentos',rows(c.gear),c.gear.length)+sec('⚔️ Ataques',rows(c.attacks),c.attacks.length)+'</div>';
+}
+function renderCompare(){
+ const sel=chars;if(!sel.length){$('comparison').innerHTML='<p class="help">Importe fichas para comparar.</p>';$('cmpCount').textContent='';return}
+ $('cmpCount').textContent='('+sel.length+')';
+ const q=$('query').value.toLowerCase().trim();
+ const sec=(title,rows,open,icon)=>{
+  const f=rows.filter(r=>!q||r.label.toLowerCase().includes(q));
+  if(!f.length)return '';
+  const head='<thead><tr><th style="text-align:left">Registro</th>'+sel.map((c,i)=>'<th style="border-top:3px solid '+charColors[i%charColors.length]+'">'+esc(c.name||c.file)+'</th>').join('')+'</tr></thead>';
+  const body='<tbody>'+f.map(r=>'<tr><th style="text-align:left">'+esc(r.label)+'</th>'+r.cells.map(x=>'<td>'+(Array.isArray(x)?(x.length?x.map(y=>esc(y.value??'—')+(y.points!=null?' <small>['+esc(y.points)+' pts]</small>':'')+(y.weight?' <small>'+esc(y.weight)+'</small>':'')+(y.detail?' <small>'+esc(y.detail)+'</small>':'')).join('<br>'):'—'):esc(x??'—'))+'</td>').join('')+'</tr>').join('')+'</tbody>';
+  return '<details class="section"'+((open||q)?' open':'')+'><summary class="section-title">'+(icon||'')+' '+title+'<span class="count">'+f.length+'</span></summary><div class="section-body"><table style="width:100%">'+head+body+'</table></div></details>';
+ };
+ const attrRows=(keys)=>keys.map(([k,l])=>({label:l,cells:sel.map(c=>attr(c,k))}));
+ const attrs=attrRows([...Object.entries(labels).map(([k,l])=>[k,l]),['dodge_auto','Esquiva (automático)']]);
+ const group=(kind,title,icon)=>{
+  const maps=sel.map(c=>{const m=new Map();for(const x of c[kind]){const key=(x.name||'').toLowerCase();if(!m.has(key))m.set(key,{name:x.name,items:[]});m.get(key).items.push(x)}return m});
+  const keys=new Set(maps.flatMap(m=>[...m.keys()]));
+  const rows=[...keys].map(k=>({label:maps.find(m=>m.has(k)).get(k).name,cells:maps.map(m=>m.get(k)?.items||[])})).sort((a,b)=>a.label.localeCompare(b.label,'pt-BR'));
+  return sec(title,rows,false,icon);
+ };
+ let html=sec('Atributos e esquiva',attrs,true,'📊');
+ html+=group('skills','Perícias','📜');
+ html+=group('spells','Mágicas','✨');
+ html+=group('advantages','Vantagens','🧬');
+ html+=group('disadvantages','Desvantagens','📉');
+ html+=group('peculiarities','Peculiaridades','⚠️');
+ html+=group('gear','Equipamentos','🎒');
+ html+=group('attacks','Ataques','⚔️');
+ $('comparison').innerHTML=html;
+}
+$('import').onclick=()=>$('files').click();$('files').onchange=e=>importFiles(e.target.files);
+$('tabSheet').onclick=()=>{$('sheetView').hidden=false;$('compareView').hidden=true;$('tabSheet').classList.add('active');$('tabCompare').classList.remove('active')};
+$('tabCompare').onclick=()=>{$('sheetView').hidden=true;$('compareView').hidden=false;$('tabCompare').classList.add('active');$('tabSheet').classList.remove('active');renderCompare()};
+$('query').oninput=renderCompare;
+$('charbar').onclick=e=>{const b=e.target.closest('button');if(!b)return;active=+b.dataset.i;render()};
+document.addEventListener('change',e=>{const id=e.target.dataset.load;if(!id)return;const c=chars.find(c=>c.id===id);if(!c)return;c.state.encumbrance=e.target.value;render();saveLocal()});
+$('save').onclick=()=>{download(JSON.stringify({formato:'plural-mesa',versao:13,fichas:serial()},null,2),'Plural-mesa.plural');notice('Backup preparado.')};
+$('theme').onclick=()=>{const l=document.documentElement.dataset.theme!=='light';document.documentElement.dataset.theme=l?'light':'dark';$('theme').textContent=l?'Tema escuro':'Tema claro'};
+$('clear').onclick=()=>{if(confirm('Esvaziar a mesa?')){chars=[];active=0;render();saveLocal()}};
+window.addEventListener('dragover',e=>e.preventDefault());window.addEventListener('drop',e=>{e.preventDefault();importFiles(e.dataTransfer.files)});
+async function boot(){try{db=await new Promise((res,rej)=>{const r=indexedDB.open('plural-local',1);r.onupgradeneeded=()=>r.result.createObjectStore('mesa');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});const saved=await new Promise((res,rej)=>{const r=db.transaction('mesa','readonly').objectStore('mesa').get('current');r.onsuccess=()=>res(r.result||[]);r.onerror=()=>rej(r.error)});for(const x of saved){try{chars.push(parseSheet(x.raw??JSON.parse((x.original??'{}').replace(/^\uFEFF/,'')),x.file||'ficha.json',x.original,x.state||{}))}catch(e){}}if(chars.length)active=0;$('storage').textContent='Recuperação local ativa.'}catch(e){$('storage').textContent='Sem recuperação automática.'}render()}
+window.Plural={parseSheet,attr,importFiles,getCharacters:()=>chars};boot();
+</script>
 </body>
 </html>
