@@ -1,4 +1,4 @@
-const VERSION='0.5.18';
+const VERSION='0.5.19';
 const CACHE='plural-'+VERSION;
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg'];
 
