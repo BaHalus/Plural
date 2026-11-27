@@ -1,0 +1,7 @@
+arquivo,familia,versao,tipo_raiz,nome,pontos_totais,n_traits,n_skills,n_equipment,n_notes,disabled_true,observacao
+Little Mouse.gcs,.gcs (sheet v5),5,anônima,Little Mouse,150,5,5,1,0,5,IDs TID curtos; armas com códigos cr/cut/imp
+PC - Kadda La.gcs,.gcs (sheet v5),5,anônima,Kadda La,125,13,14,8,1,12,IDs TID curtos; armas com códigos cr/cut/imp
+Twig-Eater.gcs,.gcs (sheet v5),5,anônima,Twig-Eater,125,3,9,4,0,10,IDs TID curtos; armas com códigos cr/cut/imp
+Wooly Rhino.gcs,.gcs (sheet v5),5,anônima,Wooly Rhino,150,14,2,0,0,50,IDs TID curtos; armas com códigos cr/cut/imp
+Homem-Zebra-PT.gcs.txt,.gcs.txt (character v2),2,character,Jake Baker,300,17,13,4,,,Sufixo .txt mas é JSON; inclui calc pré-calculado
+ALDRIC DE BOSSONIA_gurps (1) (1).json,externo (_gurps.json),2,v,ALDRIC DE BOSSONIA,150,,,,,,Formato não-GCS; guardar cru (origem a identificar)
